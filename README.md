@@ -30,11 +30,14 @@ Para compilar y ejecutar los tests se dispone de un archivo
 | `make run`          | Corre el ejecutable principal del ejercicio.                                   |
 | `make run_c`        | Corre los tests usando la implementación en C.                                 |
 | `make run_asm`      | Corre los tests usando la implementación en ASM.                               |
+| `make run_grader`   | Corre los tests obligatorios (usa la implementación en ASM).                   |
 | `make valgrind_c`   | Corre los tests en valgrind usando la implementación en C.                     |
 | `make valgrind_asm` | Corre los tests en valgrind usando la implementación en ASM.                   |
+| `make run_grader`   | Corre los tests obligatorios en valgrind (usa la implementación en ASM).       |
 | `make main`         | Genera el ejecutable principal del ejercicio.                                  |
 | `make test_c`       | Genera el ejecutable de testing usando la implementación en C del ejercicio.   |
 | `make test_asm`     | Genera el ejecutable de testing usando la implementación en ASM del ejercicio. |
+| `make grader`       | Genera el ejecutable que corre sólo los tests obligatorios usando ASM.         |
 | `make clean`        | Borra todo archivo generado por el `Makefile`.                                 |
 
 # A tener en cuenta
