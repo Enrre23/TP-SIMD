@@ -27,17 +27,16 @@ Para compilar y ejecutar los tests se dispone de un archivo
 
 | Comando             | Descripción                                                                    |
 | ------------------- | ------------------------------------------------------------------------------ |
-| `make run`          | Corre el ejecutable principal del ejercicio.                                   |
-| `make run_c`        | Corre los tests usando la implementación en C.                                 |
-| `make run_asm`      | Corre los tests usando la implementación en ASM.                               |
-| `make run_grader`   | Corre los tests obligatorios (usa la implementación en ASM).                   |
-| `make valgrind_c`   | Corre los tests en valgrind usando la implementación en C.                     |
-| `make valgrind_asm` | Corre los tests en valgrind usando la implementación en ASM.                   |
-| `make run_grader`   | Corre los tests obligatorios en valgrind (usa la implementación en ASM).       |
+| `make run`          | Corre el ejecutable principal del ejercicio (framework de debugging).          |
+| `make run_c`        | Corre los tests de todos los ejercicios usando la implementación en C.         |
+| `make run_asm`      | Corre los tests de todos los ejercicios usando la implementación en ASM.       |
+| `make run_grader`   | Evalúa el trabajo práctico (corre los ejercicios 1, 2, 3 con valgrind usando la implementación en ASM).  |
+| `make valgrind_c`   | Corre los tests de todos los ejercicios en valgrind usando la implementación en C.  |
+| `make valgrind_asm` | Corre los tests de todos los ejercicios en valgrind usando la implementación en ASM. |
 | `make main`         | Genera el ejecutable principal del ejercicio.                                  |
 | `make test_c`       | Genera el ejecutable de testing usando la implementación en C del ejercicio.   |
 | `make test_asm`     | Genera el ejecutable de testing usando la implementación en ASM del ejercicio. |
-| `make grader`       | Genera el ejecutable que corre sólo los tests obligatorios usando ASM.         |
+| `make grader`       | Genera el ejecutable con el que se evaluará el trabajo práctico.               |
 | `make clean`        | Borra todo archivo generado por el `Makefile`.                                 |
 
 # A tener en cuenta
@@ -45,6 +44,7 @@ Para compilar y ejecutar los tests se dispone de un archivo
 - Es importante que lean la documentación provista en los archivos correspondientes
   (`ejercicios.h`, `ejercicios.c` ó `ejercicios.asm` según corresponda).
 - Todos los incisos son independientes entre sí.
+- El archivo `main.c` y el target correspondiente `make run` permiten correr un framework de debugging frame por frame de los efectos visuales. El archivo SHORTCUTS.md es una cheatsheet de los atajos de teclado disponibles en este framework.
 - El sistema de tests de este trabajo práctico **sólo correrá los tests que hayan marcado como hechos**.
   Para esto deben modificar la variable correspondiente (`ej_c.posiciones_hecho`, `ej_asm.tamanios_hecho`, etc) asignándole `true` (en C) ó `TRUE` (en ASM).
 
