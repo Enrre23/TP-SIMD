@@ -56,7 +56,57 @@ valgrind_asm: test_asm
 	$(VALGRIND) ./test_asm
 	echo "No se detectaron errores de memoria"
 
-clean:
-	rm -f main test_c test_asm test_recorder ejercicios_asm.o
+# Targets usados por el tester
 
-.PHONY: all clean run run_sw run_c run_asm valgrind_c valgrind_asm
+test_c_ej1: test.c emitter.c ejercicios.c
+	$(CC) $^ $(CFLAGS_test) -DUSE_C -DSKIP_EJ2 -DSKIP_EJ3 -DSKIP_EJ4 $(LDFLAGS_test) -o $@
+
+test_c_ej2: test.c emitter.c ejercicios.c
+	$(CC) $^ $(CFLAGS_test) -DUSE_C -DSKIP_EJ1 -DSKIP_EJ3 -DSKIP_EJ4 $(LDFLAGS_test) -o $@
+
+test_c_ej3: test.c emitter.c ejercicios.c
+	$(CC) $^ $(CFLAGS_test) -DUSE_C -DSKIP_EJ1 -DSKIP_EJ2 -DSKIP_EJ4 $(LDFLAGS_test) -o $@
+
+test_c_ej4: test.c emitter.c ejercicios.c
+	$(CC) $^ $(CFLAGS_test) -DUSE_C -DSKIP_EJ1 -DSKIP_EJ2 -DSKIP_EJ3 $(LDFLAGS_test) -o $@
+
+test_asm_ej1: test.c emitter.c ejercicios_asm.o
+	$(CC) $^ $(CFLAGS_test) -DUSE_ASM -DSKIP_EJ2 -DSKIP_EJ3 -DSKIP_EJ4 $(LDFLAGS_test) -o $@
+
+test_asm_ej2: test.c emitter.c ejercicios_asm.o
+	$(CC) $^ $(CFLAGS_test) -DUSE_ASM -DSKIP_EJ1 -DSKIP_EJ3 -DSKIP_EJ4 $(LDFLAGS_test) -o $@
+
+test_asm_ej3: test.c emitter.c ejercicios_asm.o
+	$(CC) $^ $(CFLAGS_test) -DUSE_ASM -DSKIP_EJ1 -DSKIP_EJ2 -DSKIP_EJ4 $(LDFLAGS_test) -o $@
+
+test_asm_ej4: test.c emitter.c ejercicios_asm.o
+	$(CC) $^ $(CFLAGS_test) -DUSE_ASM -DSKIP_EJ1 -DSKIP_EJ2 -DSKIP_EJ3 $(LDFLAGS_test) -o $@
+
+run_c_ej1: test_c_ej1
+	./test_c_ej1
+
+run_c_ej2: test_c_ej2
+	./test_c_ej2
+
+run_c_ej3: test_c_ej3
+	./test_c_ej3
+
+run_c_ej4: test_c_ej4
+	./test_c_ej4
+
+run_asm_ej1: test_asm_ej1
+	./test_asm_ej1
+
+run_asm_ej2: test_asm_ej2
+	./test_asm_ej2
+
+run_asm_ej3: test_asm_ej3
+	./test_asm_ej3
+
+run_asm_ej4: test_asm_ej4
+	./test_asm_ej4
+
+clean:
+	rm -f main test_c test_asm test_{c,asm}_ej{1,2,3,4} test_recorder ejercicios_asm.o
+
+.PHONY: all clean run run_sw run_c run_asm valgrind_c valgrind_asm run_c_ej1 run_c_ej2 run_c_ej3 run_c_ej4 run_asm_ej1 run_asm_ej2 run_asm_ej3 run_asm_ej4

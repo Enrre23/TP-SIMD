@@ -362,25 +362,31 @@ TEST(orbitar_todo_fuera, ej.orbitar_hecho) {
 }
 
 int main(void) {
+#ifndef SKIP_EJ1
 	printf("== Ejercicio 1 ==\n");
 	posiciones_1();
+#endif
 
+#ifndef SKIP_EJ2
 	printf("== Ejercicio 2 ==\n");
 	tamanios();
 	tamanios_cutoff_1();
 	tamanios_cutoff_2();
 	tamanios_cutoff_3();
+#endif
 
+#ifndef SKIP_EJ3
 	printf("== Ejercicio 3 ==\n");
 	colores();
+#endif
 
-
+#ifndef SKIP_EJ4
 	printf("== Ejercicio 4 (opcional) ==\n");
 	orbitar();
 	orbitar_todo_dentro();
 	orbitar_todo_fuera();
+#endif
 
 	printf("\n");
-
-	return 0;
+	return test__count != test__succeed__count;
 }
