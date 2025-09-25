@@ -254,6 +254,6 @@ La firma de la rutina a implementar es la siguiente:
 void ej_orbitar(emitter_t* emitter, vec2_t* start, vec2_t* end, float r);
 ```
 
-# Mas informacion
+# Mas información
 
 - [Shortcuts de teclado](SHORTCUTS.md)
