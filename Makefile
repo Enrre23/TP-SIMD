@@ -84,27 +84,35 @@ test_asm_ej4: test.c emitter.c ejercicios_asm.o
 
 run_c_ej1: test_c_ej1
 	./test_c_ej1
+	$(VALGRIND) ./test_c_ej1
 
 run_c_ej2: test_c_ej2
 	./test_c_ej2
+	$(VALGRIND) ./test_c_ej2
 
 run_c_ej3: test_c_ej3
 	./test_c_ej3
+	$(VALGRIND) ./test_c_ej3
 
 run_c_ej4: test_c_ej4
 	./test_c_ej4
+	$(VALGRIND) ./test_c_ej4
 
 run_asm_ej1: test_asm_ej1
 	./test_asm_ej1
+	$(VALGRIND) ./test_asm_ej1
 
 run_asm_ej2: test_asm_ej2
 	./test_asm_ej2
+	$(VALGRIND) ./test_asm_ej2
 
 run_asm_ej3: test_asm_ej3
 	./test_asm_ej3
+	$(VALGRIND) ./test_asm_ej3
 
 run_asm_ej4: test_asm_ej4
 	./test_asm_ej4
+	$(VALGRIND) ./test_asm_ej4
 
 clean:
 	rm -f main test_c test_asm test_{c,asm}_ej{1,2,3,4} test_recorder ejercicios_asm.o
