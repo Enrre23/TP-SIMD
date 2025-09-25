@@ -4,6 +4,7 @@ on:
         types: [labeled]
         branches:
             - main
+            - master
 permissions:
   checks: write
   actions: read
