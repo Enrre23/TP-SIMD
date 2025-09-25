@@ -1,0 +1,7 @@
+*.o
+main
+test_c
+test_asm
+test_recorder
+props.txt
+.gdb_history
