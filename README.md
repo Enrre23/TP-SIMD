@@ -9,9 +9,9 @@
 
 -----------
 
-| <video src="https://github.com/user-attachments/assets/ed05ba57-d768-43dc-880f-e94ba0cd28ef"> | <video src="https://github.com/user-attachments/assets/bef09679-0774-41d9-9e88-c9a67ef397a4"> | <video src="https://github.com/user-attachments/assets/baa39902-d961-4d87-bb59-1250b4e71970"> |
+| <video src="https://github.com/user-attachments/assets/c12791de-100e-4673-8b1e-288129b7f776"> | <video src="https://github.com/user-attachments/assets/48c76c35-e521-4940-8cea-3dfd27044a19"> | <video src="https://github.com/user-attachments/assets/d52e7034-c75b-43cc-bc2d-24dbc9445698"> |
 | -- | -- | -- |
-| <video src="https://github.com/user-attachments/assets/69a14677-176b-44a7-8012-3df450105dbb"> | <video src="https://github.com/user-attachments/assets/d537b56e-3932-4d57-a647-df986b10489b"> | <video src="https://github.com/user-attachments/assets/f73d41f3-4c17-4054-9c6d-20940f0ade49">
+| <video src="https://github.com/user-attachments/assets/75b1ae20-c4cf-4db2-bbb4-50f640b11e6b"> | <video src="https://github.com/user-attachments/assets/218a9d2e-fe35-41a8-9113-0ed0a4da9486"> | <video src="https://github.com/user-attachments/assets/9a2008bc-8f21-4392-a58d-199058bfaa11">
 
 
 En este trabajo vamos a implementar un pequeño sistema de partículas.
