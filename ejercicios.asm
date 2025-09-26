@@ -56,9 +56,10 @@ ej_posiciones_asm:
 	jmp .check
 
 	.loop:
-		add rdi, 0 ; ¿Cantidad de partículas por loop?
+        ; Cuerpo del loop
+		add r9, 0 ; ¿Cantidad de partículas por loop?
 	.check:
-		cmp rdi, rcx
+		cmp r9, rcx
 		jb .loop
 	ret
 
