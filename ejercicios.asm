@@ -4,12 +4,12 @@ TRUE  EQU 1
 FALSE EQU 0
 
 ; Offsets a utilizar durante la resolución del ejercicio.
-PARTICLES_COUNT_OFFSET    EQU 0 ; ¡COMPLETAR!
-PARTICLES_CAPACITY_OFFSET EQU 0 ; ¡COMPLETAR!
-PARTICLES_POS_OFFSET      EQU 0 ; ¡COMPLETAR!
-PARTICLES_COLOR_OFFSET    EQU 0 ; ¡COMPLETAR!
-PARTICLES_SIZE_OFFSET     EQU 0 ; ¡COMPLETAR!
-PARTICLES_VEL_OFFSET      EQU 0 ; ¡COMPLETAR!
+PARTICLES_COUNT_OFFSET    EQU 64 ; ¡COMPLETAR!
+PARTICLES_CAPACITY_OFFSET EQU 72 ; ¡COMPLETAR!
+PARTICLES_POS_OFFSET      EQU 80 ; ¡COMPLETAR!
+PARTICLES_COLOR_OFFSET    EQU 88 ; ¡COMPLETAR!
+PARTICLES_SIZE_OFFSET     EQU 96 ; ¡COMPLETAR!
+PARTICLES_VEL_OFFSET      EQU 104 ; ¡COMPLETAR!
 
 section .rodata
 
@@ -17,7 +17,7 @@ section .rodata
 ; TP.
 global ej_asm
 ej_asm:
-  .posiciones_hecho: db FALSE
+  .posiciones_hecho: db TRUE
   .tamanios_hecho:   db FALSE
   .colores_hecho:    db FALSE
   .orbitar_hecho:    db FALSE

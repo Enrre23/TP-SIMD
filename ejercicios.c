@@ -23,7 +23,17 @@ static void ej_posiciones_c(emitter_t* emitter, vec2_t* gravedad) {
 	vec2_t* velocities = emitter->particles_vel;
 
 	for (size_t i = 0; i < count; i++) {
-		// ¡Completar!
+		if(i  == 0){
+			(emitter -> particles_pos)[0] =*positions;
+			(emitter -> particles_vel)[0] = *velocities;
+			
+		}
+		
+		else{
+			(emitter -> particles_pos)[0] =  
+			(emitter -> particles_vel)[0] = 
+		
+		}
 	}
 }
 
