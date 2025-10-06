@@ -1,10 +1,11 @@
 #include <math.h>
 #include <stdbool.h>
 #include <stddef.h>
-
+#include <stdio.h>
 #include "color.h"
 #include "ejercicios.h"
 #include "emitter.h"
+
 
 /**
  * Actualiza las posiciones de las partículas de acuerdo a la fuerza de
@@ -21,19 +22,13 @@ static void ej_posiciones_c(emitter_t* emitter, vec2_t* gravedad) {
 	size_t count = emitter->particles_count;
 	vec2_t* positions = emitter->particles_pos;
 	vec2_t* velocities = emitter->particles_vel;
+	
 
 	for (size_t i = 0; i < count; i++) {
-		if(i  == 0){
-			(emitter -> particles_pos)[0] =*positions;
-			(emitter -> particles_vel)[0] = *velocities;
-			
-		}
-		
-		else{
-			(emitter -> particles_pos)[0] =  
-			(emitter -> particles_vel)[0] = 
-		
-		}
+		(positions)[i].x = (velocities)[i].x + (positions)[i].x;
+		(positions)[i].y = (velocities)[i].y + (positions)[i].y;
+		(velocities)[i].y = (velocities)[i].y + gravedad-> y;
+		(velocities)[i].x = (velocities)[i].x + gravedad-> x;
 	}
 }
 
@@ -50,7 +45,22 @@ static void ej_posiciones_c(emitter_t* emitter, vec2_t* gravedad) {
  * ```
  */
 static void ej_tamanios_c(emitter_t* emitter, float a, float b, float c) {
-	// ¡Completar!
+	size_t cantidad_de_particulas = emitter -> particles_count;
+	float* puntero_a_tam = emitter -> particles_size;
+
+	for(int i = 0; i < cantidad_de_particulas; i++){
+		float tam_actual = puntero_a_tam[i];
+		if(c <= tam_actual){
+			tam_actual = tam_actual*a - b;
+			puntero_a_tam[i] = tam_actual;
+		}
+		else{
+			tam_actual = tam_actual - b;
+			puntero_a_tam[i] = tam_actual;
+		}
+
+
+	}
 }
 
 /**
@@ -74,9 +84,43 @@ static void ej_tamanios_c(emitter_t* emitter, float a, float b, float c) {
  *   A = 0
  * ```
  */
-static void ej_colores_c(emitter_t* emitter, SDL_Color a_restar) {
-	// ¡Completar!
+
+uint8_t calcular_maximo(uint8_t c, uint8_t delta){
+	uint8_t num = c - delta;
+
+	if(c >= delta){ 
+		return num; 
+	}
+	else{
+		return 0;
+	}
+	
 }
+
+static void ej_colores_c(emitter_t* emitter, SDL_Color a_restar) {
+	size_t cantidad_particulas = emitter -> particles_count;
+	SDL_Color* puntero_a_colores = emitter ->particles_color;  
+	for(int i = 0; i < cantidad_particulas; i++){
+		SDL_Color color_actual = puntero_a_colores[i];
+
+		uint8_t rojo = calcular_maximo(puntero_a_colores[i].r, a_restar.r);
+		puntero_a_colores[i].r = rojo;
+		
+		uint8_t verde = calcular_maximo(puntero_a_colores[i].g, a_restar.g);
+		puntero_a_colores[i].g = verde;
+
+		uint8_t azul = calcular_maximo(puntero_a_colores[i].b, a_restar.b);
+		puntero_a_colores[i].b = azul;
+
+		uint8_t osucuro = calcular_maximo(puntero_a_colores[i].a, a_restar.a);
+		puntero_a_colores[i].a = osucuro;
+		
+	}
+
+
+}
+
+
 
 /**
  * Calcula un campo de fuerza y lo aplica a cada una de las partículas,
@@ -141,6 +185,6 @@ ejercicio_t ej_c = {
 	.colores_hecho    = false,
 	.colores          = ej_colores_c,
 
-	.orbitar_hecho    = true,
+	.orbitar_hecho    = false,
 	.orbitar          = ej_orbitar_c
 };

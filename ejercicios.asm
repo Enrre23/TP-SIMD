@@ -4,12 +4,12 @@ TRUE  EQU 1
 FALSE EQU 0
 
 ; Offsets a utilizar durante la resolución del ejercicio.
-PARTICLES_COUNT_OFFSET    EQU 64 ; ¡COMPLETAR!
-PARTICLES_CAPACITY_OFFSET EQU 72 ; ¡COMPLETAR!
-PARTICLES_POS_OFFSET      EQU 80 ; ¡COMPLETAR!
-PARTICLES_COLOR_OFFSET    EQU 88 ; ¡COMPLETAR!
-PARTICLES_SIZE_OFFSET     EQU 96 ; ¡COMPLETAR!
-PARTICLES_VEL_OFFSET      EQU 104 ; ¡COMPLETAR!
+PARTICLES_COUNT_OFFSET    EQU 56 ; ¡COMPLETAR!
+PARTICLES_CAPACITY_OFFSET EQU 64 ; ¡COMPLETAR!
+PARTICLES_POS_OFFSET      EQU 72 ; ¡COMPLETAR!
+PARTICLES_COLOR_OFFSET    EQU 80 ; ¡COMPLETAR!
+PARTICLES_SIZE_OFFSET     EQU 88 ; ¡COMPLETAR!
+PARTICLES_VEL_OFFSET      EQU 96 ; ¡COMPLETAR!
 
 section .rodata
 
@@ -18,8 +18,8 @@ section .rodata
 global ej_asm
 ej_asm:
   .posiciones_hecho: db TRUE
-  .tamanios_hecho:   db FALSE
-  .colores_hecho:    db FALSE
+  .tamanios_hecho:   db TRUE
+  .colores_hecho:    db TRUE
   .orbitar_hecho:    db FALSE
   ALIGN 8
   .posiciones: dq ej_posiciones_asm
@@ -48,19 +48,40 @@ section .text
 ;
 ; void ej_posiciones(emitter_t* emitter, vec2_t* gravedad);
 ej_posiciones_asm:
+	push rbp
+	mov rbp, rsp
 	mov rcx, [rdi + PARTICLES_COUNT_OFFSET]
+	sar rcx, 1
 	mov rdx, [rdi + PARTICLES_POS_OFFSET]
-	mov r8,  [rdi + PARTICLES_VEL_OFFSET]
+	mov r8, [rdi + PARTICLES_VEL_OFFSET]
+	xor r9, r9				;391
+	movq xmm3, qword[rsi]
+	movq xmm4, qword[rsi]
+	unpcklpd xmm3, xmm4
 
-	xor r9, r9
-	jmp .check
+	
+.while:
+	cmp r9, rcx
+	je .fin
 
-	.loop:
-        ; Cuerpo del loop
-		add r9, 0 ; ¿Cantidad de partículas por loop?
-	.check:
-		cmp r9, rcx
-		jb .loop
+	imul r10, r9, 16
+	
+	movdqa xmm0, [rdx + r10] ;Cargamos las posciones
+	movdqa xmm1, [r8 + r10]  ;Cargamos las velocidades
+	
+	addps xmm0, xmm1 
+	movdqa [rdx + r10], xmm0
+
+	addps xmm1, xmm3
+	movdqa [r8 + r10], xmm1
+	
+	add r9, 1
+
+	jmp .while
+
+.fin:
+
+	pop rbp
 	ret
 
 ; Actualiza los tamaños de las partículas de acuerdo a la configuración dada.
@@ -74,8 +95,75 @@ ej_posiciones_asm:
 ;   s := s - b
 ; ```
 ;
+;emitter -> rdi, a -> xmm0, b -> xmm1, c -> xmm2
 ; void ej_tamanios(emitter_t* emitter, float a, float b, float c);
 ej_tamanios_asm:
+	push rbp
+	mov rbp, rsp
+	push r12
+	push r13
+
+	mov r10, 0 ;r10 sera el indice
+	mov r12, [rdi + PARTICLES_COUNT_OFFSET] ;Guardamos la cantida de particulas
+	mov r13, [rdi + PARTICLES_SIZE_OFFSET] ;Puntero a tamaños
+	sar r12, 2 
+	pextrd r8d, xmm2, 0
+	pinsrd xmm7, r8d, 0
+	pinsrd xmm7, r8d, 1
+	pinsrd xmm7, r8d, 2
+	pinsrd xmm7, r8d, 3	;c
+
+	pextrd r8d, xmm0, 0
+	pinsrd xmm6, r8d, 0
+	pinsrd xmm6, r8d, 1
+	pinsrd xmm6, r8d, 2
+	pinsrd xmm6, r8d, 3 ;a
+
+	pextrd r8d, xmm1, 0
+	pinsrd xmm5, r8d, 0
+	pinsrd xmm5, r8d, 1
+	pinsrd xmm5, r8d, 2
+	pinsrd xmm5, r8d, 3 ;b 
+		
+.loop:
+	
+
+	cmp r10, r12
+	je .fin
+
+	imul r11, r10, 16 ;r11 = r10*16
+	movdqa xmm4, [r13 + r11] ;Accedemos a tamaños
+	
+	VPCMPGTD xmm2, xmm7, xmm4 ; c > tam actual
+	
+	vandps xmm0, xmm2, xmm4	;xmm2 and xmm4
+
+	vsubps xmm0, xmm0, xmm5 ; xmm0 - xmm5
+
+	vandps xmm0, xmm0, xmm2 ;xmm2 and xmm4
+	
+	vandnps xmm1, xmm2, xmm4 ; (not xmm2) and xmm4
+
+	vmulps xmm1, xmm1, xmm6 ; xmm1 = xmm1*a
+	
+	vsubps xmm1, xmm1, xmm5	; xmm1 = xmm1*a - b
+	
+	vandnps xmm1, xmm2, xmm1 
+
+	vorps  xmm1, xmm1, xmm0
+
+	movdqa [r13 + r11], xmm1
+
+	add r10, 1
+
+	JMP .loop
+
+
+
+.fin:
+	pop r13
+	pop r12
+	pop rbp
 	ret
 
 ; Actualiza los colores de las partículas de acuerdo al delta de color
@@ -100,7 +188,49 @@ ej_tamanios_asm:
 ;
 ; void ej_colores(emitter_t* emitter, SDL_Color a_restar);
 ej_colores_asm:
+	push rbp
+	mov rbp, rsp
+	push r12
+	push r13
+
+	mov r10, 0 ;r10 sera el indice
+	mov r12, [rdi + PARTICLES_COUNT_OFFSET] ;Guardamos la cantida de particulas
+	mov r13, [rdi + PARTICLES_COLOR_OFFSET]
+	sar r12, 2
+
+	pinsrd xmm0, esi, 0
+	pinsrd xmm0, esi, 1
+	pinsrd xmm0, esi, 2
+	pinsrd xmm0, esi, 3
+
+	mov r8, 0
+	pinsrq xmm1, r8, 0
+	pinsrq xmm1, r8, 1
+
+.loop:
+	cmp r10, r12 
+	je .fin
+
+	imul r11, r10, 16
+	movdqa xmm4, [r13 + r11] ;Accedemos a los colores
+
+	vPSUBUSB xmm2, xmm4, xmm0  ;Ralizamos la resta saturada
+
+	vPMAXUB xmm2, xmm2, xmm1 					;Elegimos el maximo
+
+	movdqa [r13 + r11], xmm2
+
+	add r10, 1
+
+	jmp .loop
+	
+
+.fin:
+	pop r13
+	pop r12
+	pop rbp
 	ret
+
 
 ; Calcula un campo de fuerza y lo aplica a cada una de las partículas,
 ; haciendo que tracen órbitas.
